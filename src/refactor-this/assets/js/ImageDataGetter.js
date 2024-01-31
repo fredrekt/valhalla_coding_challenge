@@ -5,7 +5,11 @@ const ImageDataGetter = {
 
     return fetch(url)
       .then(response => response.json())
-      .then(result => result);
+      .then(result => result)
+      .catch(error => {
+        console.error("Something wen't wrong in fetching images: ", error.message);
+        throw error;
+      });
   },
 
   getNatureImages: function () {
