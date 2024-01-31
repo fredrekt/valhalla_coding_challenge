@@ -1,73 +1,39 @@
 function ImageDataGetter() {}
 
-ImageDataGetter.getNatureImages = function () {
-  var images = []
-  return fetch('http://localhost:8888/images?category=nature')
+ImageDataGetter.getImages = function (category, page = '') {
+  var images = [];
+  var url = `http://localhost:8888/images?category=${category}&page=${page}`;
+
+  return fetch(url)
     .then(function (response) {
-      return response.json()
+      return response.json();
     })
     .then(function (result) {
-      images = result
-      return images
-    })
-}
+      images = result;
+      return images;
+    });
+};
+
+ImageDataGetter.getNatureImages = function () {
+  return ImageDataGetter.getImages('nature');
+};
 
 ImageDataGetter.getArchitectureImages = function () {
-  var images = []
-  return fetch('http://localhost:8888/images?category=architecture')
-    .then(function (response) {
-      return response.json()
-    })
-    .then(function (result) {
-      images = result
-      return images
-    })
-}
+  return ImageDataGetter.getImages('architecture');
+};
 
 ImageDataGetter.getFashionImages = function () {
-  var images = []
-  return fetch('http://localhost:8888/images?category=fashion')
-    .then(function (response) {
-      return response.json()
-    })
-    .then(function (result) {
-      images = result
-      return images
-    })
-}
+  return ImageDataGetter.getImages('fashion');
+};
 
 ImageDataGetter.getNatureImagesFromPage = function (page) {
-  var images = []
-  return fetch('http://localhost:8888/images?category=nature&page=' + page)
-    .then(function (response) {
-      return response.json()
-    })
-    .then(function (result) {
-      images = result
-      return images
-    })
-}
+  return ImageDataGetter.getImages('nature', page);
+};
 
 ImageDataGetter.getArchitectureImagesFromPage = function (page) {
-  var images = []
-  return fetch('http://localhost:8888/images?category=architecture&page=' + page)
-    .then(function (response) {
-      return response.json()
-    })
-    .then(function (result) {
-      images = result
-      return images
-    })
-}
+  return ImageDataGetter.getImages('architecture', page);
+};
 
 ImageDataGetter.getFashionImagesFromPage = function (page) {
-  var images = []
-  return fetch('http://localhost:8888/images?category=fashion&page=' + page)
-    .then(function (response) {
-      return response.json()
-    })
-    .then(function (result) {
-      images = result
-      return images
-    })
-}
+  return ImageDataGetter.getImages('fashion', page);
+};
