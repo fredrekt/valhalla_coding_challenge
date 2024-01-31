@@ -25,3 +25,7 @@
 .col:hover .middle {
   opacity: 1;
 }
+
+.black-text {
+  color: #000!important;
+}
