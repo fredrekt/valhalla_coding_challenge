@@ -1,5 +1,6 @@
 const ImageDataGetter = {
   getImages: function (category, page = '') {
+    console.log('getting page: ', page);
     const url = `http://localhost:8888/images?category=${category}&page=${page}`;
 
     return fetch(url)
