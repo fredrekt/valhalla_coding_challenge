@@ -1,39 +1,33 @@
-function ImageDataGetter() {}
+const ImageDataGetter = {
+  getImages: function (category, page = '') {
+    const url = `http://localhost:8888/images?category=${category}&page=${page}`;
 
-ImageDataGetter.getImages = function (category, page = '') {
-  var images = [];
-  var url = `http://localhost:8888/images?category=${category}&page=${page}`;
+    return fetch(url)
+      .then(response => response.json())
+      .then(result => result);
+  },
 
-  return fetch(url)
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (result) {
-      images = result;
-      return images;
-    });
-};
+  getNatureImages: function () {
+    return this.getImages('nature');
+  },
 
-ImageDataGetter.getNatureImages = function () {
-  return ImageDataGetter.getImages('nature');
-};
+  getArchitectureImages: function () {
+    return this.getImages('architecture');
+  },
 
-ImageDataGetter.getArchitectureImages = function () {
-  return ImageDataGetter.getImages('architecture');
-};
+  getFashionImages: function () {
+    return this.getImages('fashion');
+  },
 
-ImageDataGetter.getFashionImages = function () {
-  return ImageDataGetter.getImages('fashion');
-};
+  getNatureImagesFromPage: function (page) {
+    return this.getImages('nature', page);
+  },
 
-ImageDataGetter.getNatureImagesFromPage = function (page) {
-  return ImageDataGetter.getImages('nature', page);
-};
+  getArchitectureImagesFromPage: function (page) {
+    return this.getImages('architecture', page);
+  },
 
-ImageDataGetter.getArchitectureImagesFromPage = function (page) {
-  return ImageDataGetter.getImages('architecture', page);
-};
-
-ImageDataGetter.getFashionImagesFromPage = function (page) {
-  return ImageDataGetter.getImages('fashion', page);
+  getFashionImagesFromPage: function (page) {
+    return this.getImages('fashion', page);
+  },
 };
