@@ -1,7 +1,7 @@
 function ImageGridViewRenderer() {}
 
 ImageGridViewRenderer.prototype.render = function () {
-  var nav = `
+  const nav = `
     <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="/">Photo Sharing App</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,6 +24,7 @@ ImageGridViewRenderer.prototype.render = function () {
   }
 
   if (window.location.search.includes('?nature')) {
+    // Nature page
     const containerId = 'nature-images'
     document.getElementById("main-view").innerHTML += generateGridContainerImage(containerId);
     ImageDataGetter.getNatureImagesFromPage((page * 3) - 2)
@@ -45,6 +46,7 @@ ImageGridViewRenderer.prototype.render = function () {
         }
       })
   } else if (window.location.search.includes('?architecture')) {
+    // Architecture page
     const containerId = "architecture-images";
     document.getElementById("main-view").innerHTML += generateGridContainerImage(containerId);
     ImageDataGetter.getArchitectureImagesFromPage((page * 3) - 2)
@@ -66,6 +68,7 @@ ImageGridViewRenderer.prototype.render = function () {
         }
       })
   } else if (window.location.search.includes('?fashion')) {
+    // Fashion page
     const containerId = "fashion-images";
     document.getElementById("main-view").innerHTML += generateGridContainerImage(containerId);
     ImageDataGetter.getFashionImagesFromPage((page * 3) - 2)
@@ -87,6 +90,7 @@ ImageGridViewRenderer.prototype.render = function () {
         }
       })
   } else {
+    // Default/Homepage
     const containerId = "default-images";
     document.getElementById("main-view").innerHTML += generateGridContainerImage(containerId);
     ImageDataGetter.getFashionImagesFromPage((page * 3) - 2)
