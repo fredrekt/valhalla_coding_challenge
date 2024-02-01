@@ -4,7 +4,9 @@
   "description": "Valhalla Technical Test",
   "main": "src/refactor-this/index.js",
   "scripts": {
-    "start": "node src/do-not-refactor/server.js | serve src/refactor-this",
+    "start": "concurrently \"yarn start:server\" \"yarn start:client\"",
+    "start:server": "nodemon src/do-not-refactor/server.js",
+    "start:client": "live-server src/refactor-this --port=4000 --wait=500",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,5 +23,10 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "serve": "^11.3.2"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "live-server": "^1.2.2",
+    "nodemon": "^3.0.3"
   }
 }
