@@ -25,6 +25,10 @@ function handleDownloadClick(event) {
   xhr.send();
 }
 
+function removePageQueryParam() {
+  window.location.href = window.location.search.split('&page')[0].split('=')[0]
+}
+
 function ImageGridViewRenderer() {}
 
 ImageGridViewRenderer.prototype.render = function () {
@@ -54,68 +58,17 @@ ImageGridViewRenderer.prototype.render = function () {
     // Nature page
     const containerId = 'nature-images'
     document.getElementById("main-view").innerHTML += generateGridContainerImage(containerId);
-    ImageDataGetter.getNatureImagesFromPage((page * 3) - 2)
-      .then(function (images) {
-        for (var i = 0; i < images.length; i++) {
-          document.getElementById(containerId).innerHTML += generateGridImages(images[i])
-        }
-      })
-    ImageDataGetter.getNatureImagesFromPage((page * 3) - 1)
-      .then(function (images) {
-        for (var i = 0; i < images.length; i++) {
-          document.getElementById(containerId).innerHTML += generateGridImages(images[i])
-        }
-      })
-    ImageDataGetter.getNatureImagesFromPage(page * 3)
-      .then(function (images) {
-        for (var i = 0; i < images.length; i++) {
-          document.getElementById(containerId).innerHTML += generateGridImages(images[i])
-        }
-      })
+    generateImageData(containerId)
   } else if (window.location.search.includes('?architecture')) {
     // Architecture page
     const containerId = "architecture-images";
     document.getElementById("main-view").innerHTML += generateGridContainerImage(containerId);
-    ImageDataGetter.getArchitectureImagesFromPage((page * 3) - 2)
-      .then(function (images) {
-        for (var i = 0; i < images.length; i++) {
-          document.getElementById(containerId).innerHTML += generateGridImages(images[i])
-        }
-      })
-    ImageDataGetter.getArchitectureImagesFromPage((page * 3) - 1)
-      .then(function (images) {
-        for (var i = 0; i < images.length; i++) {
-          document.getElementById(containerId).innerHTML += generateGridImages(images[i])
-        }
-      })
-    ImageDataGetter.getArchitectureImagesFromPage(page * 3)
-      .then(function (images) {
-        for (var i = 0; i < images.length; i++) {
-          document.getElementById(containerId).innerHTML += generateGridImages(images[i])
-        }
-      })
+    generateImageData(containerId)
   } else if (window.location.search.includes('?fashion')) {
     // Fashion page
     const containerId = "fashion-images";
     document.getElementById("main-view").innerHTML += generateGridContainerImage(containerId);
-    ImageDataGetter.getFashionImagesFromPage((page * 3) - 2)
-      .then(function (images) {
-        for (var i = 0; i < images.length; i++) {
-          document.getElementById(containerId).innerHTML += generateGridImages(images[i])
-        }
-      })
-    ImageDataGetter.getFashionImagesFromPage((page * 3) - 1)
-      .then(function (images) {
-        for (var i = 0; i < images.length; i++) {
-          document.getElementById(containerId).innerHTML += generateGridImages(images[i])
-        }
-      })
-    ImageDataGetter.getFashionImagesFromPage(page * 3)
-      .then(function (images) {
-        for (var i = 0; i < images.length; i++) {
-          document.getElementById(containerId).innerHTML += generateGridImages(images[i])
-        }
-      })
+    generateImageData(containerId);
   } else {
     // Default/Homepage
     const containerId = "default-images";
@@ -163,6 +116,38 @@ ImageGridViewRenderer.prototype.render = function () {
     `);
   }
 
+  function generateImageData(containerId) {
+    let getImageFunction = '';
+
+    switch (containerId) {
+      case 'nature-images':
+        getImageFunction = 'getNatureImagesFromPage';
+        break;
+      case 'architecture-images':
+        getImageFunction = 'getArchitectureImagesFromPage';
+        break;
+      case 'fashion-images':
+        getImageFunction = 'getFashionImagesFromPage';
+        break; 
+      default:
+        break;
+    }
+
+    if (getImageFunction) {
+      for (let offset = -2; offset <= 0; offset++) {
+        ImageDataGetter[getImageFunction]((page * 3) + offset)
+          .then(function (images) {
+            for (let i = 0; i < images.length; i++) {
+              document.getElementById(containerId).innerHTML += generateGridImages(images[i]);
+            }
+          })
+          .catch(function (error) {
+            console.error(`Error fetching images for page ${page * 3 + offset}:`, error);
+          });
+      }
+    }
+  }
+
   var prevsearchstr = window.location.search.split('&page')[0] + '&page=' + (page - 1)
   var nextsearchstr = window.location.search.split('&page')[0] + '&page=' + (page + 1)
   const pagination = `
@@ -178,6 +163,18 @@ ImageGridViewRenderer.prototype.render = function () {
   const paginationNav = document.getElementById("pagination-nav");
   if (window.location.pathname === '/' && window.location.search === '') {
     paginationNav.style.display = 'none';
+  } else if (page === 4) {
+    paginationNav.style.display = 'none';
+    document.getElementById("main-view").innerHTML += `
+      <div class="container text-center mt-5 mb-4">
+        <p class="text-center">
+          No images left.
+        </p>
+        <button class="btn btn-dark"
+          onclick="removePageQueryParam()"
+        >Go back</button>
+      </div>
+    `
   } else {
     paginationNav.style.display = 'block';
   }
