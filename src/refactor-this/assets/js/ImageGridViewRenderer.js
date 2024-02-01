@@ -1,38 +1,38 @@
 function handleDownloadClick(event) {
-  var url = event.target.getAttribute('data-url');
-  var name = event.target.getAttribute('data-name');
-  
-  var xhr = new XMLHttpRequest();
+	var url = event.target.getAttribute('data-url');
+	var name = event.target.getAttribute('data-name');
 
-  xhr.open("GET", url, true);
-  xhr.responseType = 'blob';
-  xhr.onload = function () {
-    if (xhr.status === 200) {
-      var blob = new Blob([xhr.response], { type: 'image/jpeg' });
+	var xhr = new XMLHttpRequest();
 
-      var link = document.createElement('a');
+	xhr.open('GET', url, true);
+	xhr.responseType = 'blob';
+	xhr.onload = function () {
+		if (xhr.status === 200) {
+			var blob = new Blob([xhr.response], { type: 'image/jpeg' });
 
-      link.download = name + '.jpeg';
-      link.href = window.URL.createObjectURL(blob);
+			var link = document.createElement('a');
 
-      document.body.appendChild(link);
-      link.click();
+			link.download = name + '.jpeg';
+			link.href = window.URL.createObjectURL(blob);
 
-      document.body.removeChild(link);
-    }
-  };
+			document.body.appendChild(link);
+			link.click();
 
-  xhr.send();
+			document.body.removeChild(link);
+		}
+	};
+
+	xhr.send();
 }
 
 function removePageQueryParam() {
-  window.location.href = window.location.search.split('&page')[0].split('=')[0]
+	window.location.href = window.location.search.split('&page')[0].split('=')[0];
 }
 
 function ImageGridViewRenderer() {}
 
 ImageGridViewRenderer.prototype.render = function () {
-  const nav = `
+	const nav = `
     <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="/">Photo Sharing App</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,61 +47,58 @@ ImageGridViewRenderer.prototype.render = function () {
       </div>
     </nav>`;
 
-  document.getElementById("main-view").innerHTML = nav
+	document.getElementById('main-view').innerHTML = nav;
 
-  var page = 1
-  if (window.location.search.includes('page')) {
-    page = Number(window.location.search.split('page=')[1])
-  }
+	var page = 1;
+	if (window.location.search.includes('page')) {
+		page = Number(window.location.search.split('page=')[1]);
+	}
 
-  if (window.location.search.includes('?nature')) {
-    // Nature page
-    const containerId = 'nature-images'
-    document.getElementById("main-view").innerHTML += generateGridContainerImage(containerId);
-    generateImageData(containerId)
-  } else if (window.location.search.includes('?architecture')) {
-    // Architecture page
-    const containerId = "architecture-images";
-    document.getElementById("main-view").innerHTML += generateGridContainerImage(containerId);
-    generateImageData(containerId)
-  } else if (window.location.search.includes('?fashion')) {
-    // Fashion page
-    const containerId = "fashion-images";
-    document.getElementById("main-view").innerHTML += generateGridContainerImage(containerId);
-    generateImageData(containerId);
-  } else {
-    // Default/Homepage
-    const containerId = "default-images";
-    document.getElementById("main-view").innerHTML += generateGridContainerImage(containerId);
-    ImageDataGetter.getFashionImagesFromPage((page * 3) - 2)
-      .then(function (images) {
-        for (var i = 0; i < images.length; i++) {
-          document.getElementById(containerId).innerHTML += generateGridImages(images[i])
-        }
-      })
-    ImageDataGetter.getArchitectureImagesFromPage((page * 3) - 1)
-    .then(function (images) {
-      for (var i = 0; i < images.length; i++) {
-        document.getElementById(containerId).innerHTML += generateGridImages(images[i])
-      }
-    })
-    ImageDataGetter.getNatureImagesFromPage(page * 3)
-    .then(function (images) {
-      for (var i = 0; i < images.length; i++) {
-        document.getElementById(containerId).innerHTML += generateGridImages(images[i])
-      }
-    })
-  }
+	if (window.location.search.includes('?nature')) {
+		// Nature page
+		const containerId = 'nature-images';
+		document.getElementById('main-view').innerHTML += generateGridContainerImage(containerId);
+		generateImageData(containerId);
+	} else if (window.location.search.includes('?architecture')) {
+		// Architecture page
+		const containerId = 'architecture-images';
+		document.getElementById('main-view').innerHTML += generateGridContainerImage(containerId);
+		generateImageData(containerId);
+	} else if (window.location.search.includes('?fashion')) {
+		// Fashion page
+		const containerId = 'fashion-images';
+		document.getElementById('main-view').innerHTML += generateGridContainerImage(containerId);
+		generateImageData(containerId);
+	} else {
+		// Default/Homepage
+		const containerId = 'default-images';
+		document.getElementById('main-view').innerHTML += generateGridContainerImage(containerId);
+		ImageDataGetter.getFashionImagesFromPage(page * 3 - 2).then(function (images) {
+			for (var i = 0; i < images.length; i++) {
+				document.getElementById(containerId).innerHTML += generateGridImages(images[i]);
+			}
+		});
+		ImageDataGetter.getArchitectureImagesFromPage(page * 3 - 1).then(function (images) {
+			for (var i = 0; i < images.length; i++) {
+				document.getElementById(containerId).innerHTML += generateGridImages(images[i]);
+			}
+		});
+		ImageDataGetter.getNatureImagesFromPage(page * 3).then(function (images) {
+			for (var i = 0; i < images.length; i++) {
+				document.getElementById(containerId).innerHTML += generateGridImages(images[i]);
+			}
+		});
+	}
 
-  function generateGridContainerImage(containerId) {
-    return `
+	function generateGridContainerImage(containerId) {
+		return `
       <div class="container">
         <div id="${containerId}" class="row row-cols-3"></div>
       </div>`;
-  }
+	}
 
-  function generateGridImages(image) {
-    return (`
+	function generateGridImages(image) {
+		return `
       <div class="col" style="height: 400px; padding: 10px;">
         <img class="image" src="${image.url}" alt="${image.name}" style="height: 100%; object-fit: cover; width: 100%;" />
         <div class="middle">
@@ -113,44 +110,44 @@ ImageGridViewRenderer.prototype.render = function () {
           </button>
         </div>
       </div>
-    `);
-  }
+    `;
+	}
 
-  function generateImageData(containerId) {
-    let getImageFunction = '';
+	function generateImageData(containerId) {
+		let getImageFunction = '';
 
-    switch (containerId) {
-      case 'nature-images':
-        getImageFunction = 'getNatureImagesFromPage';
-        break;
-      case 'architecture-images':
-        getImageFunction = 'getArchitectureImagesFromPage';
-        break;
-      case 'fashion-images':
-        getImageFunction = 'getFashionImagesFromPage';
-        break; 
-      default:
-        break;
-    }
+		switch (containerId) {
+			case 'nature-images':
+				getImageFunction = 'getNatureImagesFromPage';
+				break;
+			case 'architecture-images':
+				getImageFunction = 'getArchitectureImagesFromPage';
+				break;
+			case 'fashion-images':
+				getImageFunction = 'getFashionImagesFromPage';
+				break;
+			default:
+				break;
+		}
 
-    if (getImageFunction) {
-      for (let offset = -2; offset <= 0; offset++) {
-        ImageDataGetter[getImageFunction]((page * 3) + offset)
-          .then(function (images) {
-            for (let i = 0; i < images.length; i++) {
-              document.getElementById(containerId).innerHTML += generateGridImages(images[i]);
-            }
-          })
-          .catch(function (error) {
-            console.error(`Error fetching images for page ${page * 3 + offset}:`, error);
-          });
-      }
-    }
-  }
+		if (getImageFunction) {
+			for (let offset = -2; offset <= 0; offset++) {
+				ImageDataGetter[getImageFunction](page * 3 + offset)
+					.then(function (images) {
+						for (let i = 0; i < images.length; i++) {
+							document.getElementById(containerId).innerHTML += generateGridImages(images[i]);
+						}
+					})
+					.catch(function (error) {
+						console.error(`Error fetching images for page ${page * 3 + offset}:`, error);
+					});
+			}
+		}
+	}
 
-  var prevsearchstr = window.location.search.split('&page')[0] + '&page=' + (page - 1)
-  var nextsearchstr = window.location.search.split('&page')[0] + '&page=' + (page + 1)
-  const pagination = `
+	var prevsearchstr = window.location.search.split('&page')[0] + '&page=' + (page - 1);
+	var nextsearchstr = window.location.search.split('&page')[0] + '&page=' + (page + 1);
+	const pagination = `
   <nav id="pagination-nav" class="container mt-4 px-2">
     <ul class="pagination">
       <li class="page-item"><a title='Previous' class="page-link black-text" href="${prevsearchstr}"><i class="bi bi-arrow-left"></i></a></li>
@@ -158,14 +155,14 @@ ImageGridViewRenderer.prototype.render = function () {
     </ul>
   </nav>`;
 
-  document.getElementById("main-view").innerHTML += pagination
+	document.getElementById('main-view').innerHTML += pagination;
 
-  const paginationNav = document.getElementById("pagination-nav");
-  if (window.location.pathname === '/' && window.location.search === '') {
-    paginationNav.style.display = 'none';
-  } else if (page === 4) {
-    paginationNav.style.display = 'none';
-    document.getElementById("main-view").innerHTML += `
+	const paginationNav = document.getElementById('pagination-nav');
+	if (window.location.pathname === '/' && window.location.search === '') {
+		paginationNav.style.display = 'none';
+	} else if (page === 4) {
+		paginationNav.style.display = 'none';
+		document.getElementById('main-view').innerHTML += `
       <div class="container text-center mt-5 mb-4">
         <p class="text-center">
           No images left.
@@ -174,8 +171,8 @@ ImageGridViewRenderer.prototype.render = function () {
           onclick="removePageQueryParam()"
         >Go back</button>
       </div>
-    `
-  } else {
-    paginationNav.style.display = 'block';
-  }
-}
+    `;
+	} else {
+		paginationNav.style.display = 'block';
+	}
+};

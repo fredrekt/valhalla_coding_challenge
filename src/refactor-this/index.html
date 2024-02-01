@@ -1,26 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Photo Sharing App</title>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Photo Sharing App</title>
 
-  <!-- External JavaScript -->
-  <script defer src="assets/js/ImageDataGetter.js"></script>
-  <script defer src="assets/js/ImageGridViewRenderer.js"></script>
+		<!-- External JavaScript -->
+		<script defer src="assets/js/ImageDataGetter.js"></script>
+		<script defer src="assets/js/ImageGridViewRenderer.js"></script>
 
-  <!-- External CSS -->
-  <link rel="stylesheet" href="assets/css/main.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-</head>
-<body>
-  <div id="main-view"></div>
-</body>
-<script type="text/javascript">
-  document.addEventListener("DOMContentLoaded", function () {
-    const view = new ImageGridViewRenderer();
-    view.render();
-  });
-</script>
+		<!-- External CSS -->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+			integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+			crossorigin="anonymous"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+		/>
+	</head>
+	<body>
+		<div id="main-view"></div>
+	</body>
+	<script type="text/javascript">
+		document.addEventListener('DOMContentLoaded', function () {
+			const view = new ImageGridViewRenderer();
+			view.render();
+		});
+	</script>
 </html>
