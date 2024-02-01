@@ -1,3 +1,30 @@
+function handleDownloadClick(event) {
+  var url = event.target.getAttribute('data-url');
+  var name = event.target.getAttribute('data-name');
+  
+  var xhr = new XMLHttpRequest();
+
+  xhr.open("GET", url, true);
+  xhr.responseType = 'blob';
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      var blob = new Blob([xhr.response], { type: 'image/jpeg' });
+
+      var link = document.createElement('a');
+
+      link.download = name + '.jpeg';
+      link.href = window.URL.createObjectURL(blob);
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+    }
+  };
+
+  xhr.send();
+}
+
 function ImageGridViewRenderer() {}
 
 ImageGridViewRenderer.prototype.render = function () {
@@ -125,7 +152,12 @@ ImageGridViewRenderer.prototype.render = function () {
       <div class="col" style="height: 400px; padding: 10px;">
         <img class="image" src="${image.url}" alt="${image.name}" style="height: 100%; object-fit: cover; width: 100%;" />
         <div class="middle">
-          <a class="btn btn-dark" href="${image.url}" download="${image.name}">DOWNLOAD</a>
+          <button class="btn btn-dark" 
+            data-url="${image.url}" 
+            data-name="${image.name}" 
+            onclick="handleDownloadClick(event)">
+            DOWNLOAD
+          </button>
         </div>
       </div>
     `);
